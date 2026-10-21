@@ -5,3 +5,7 @@ Interactive guitar theory for players who learned by ear: where the notes are on
 It's a single static page (`index.html`) with no build step. Open it in a browser, or serve it with GitHub Pages.
 
 Live site: https://xavier-batista-fernandes.github.io/six-strings/
+
+## Languages
+
+The app is available in English and Portuguese (globe button in the header). Portuguese can show notes as Dó Ré Mi or C D E. All visible text lives in `i18n/<code>.js`, one file per language. To add a language, copy `i18n/en.js` to a new file, translate the values (and add the language's note names under `notes`), then add a `<script>` tag for it in `index.html` next to the others. Anything left untranslated falls back to English.
