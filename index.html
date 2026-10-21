@@ -56,6 +56,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .sound-panel h4{margin:0 0 6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .sound-panel .seg+h4{margin-top:14px}
 .sound-panel p{margin:8px 0 0;font-size:13px;color:var(--muted)}
+@media (max-width:1240px){nav.tabs{order:3;flex-basis:100%;margin-left:0}.tools{margin-left:auto}}
 @media (max-width:860px){nav.tabs{order:3;flex-basis:100%;margin-left:0}.sound-wrap{margin-left:auto}}
 @media (max-width:560px){.theme-btn .tl{display:none}.brand small{display:none}}
 nav.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-left:auto;max-width:100%}
@@ -202,6 +203,76 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
 .result.best{background:var(--accent-soft)}
 .result b{font-family:var(--f-mono)}
 .footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+
+/* course roadmap: units are panels, steps hang off a vertical line with a round done toggle */
+.tab .route{width:12px;height:12px;fill:currentColor;stroke:currentColor;stroke-width:1.3}
+.tab .route path{fill:none}
+.tab.done > span::after{content:" ✓";color:var(--good)}
+.tab[aria-selected="true"].done > span::after{color:inherit}
+.panel[id],.unit{scroll-margin-top:130px}
+.bar{height:10px;border-radius:5px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--good);transition:width .3s}
+.bigcount{font-family:var(--f-display);font-weight:800;font-size:44px;line-height:1}
+.bigcount small{font-family:var(--f-body);font-weight:400;font-size:15px;color:var(--muted);margin-left:6px}
+.track{display:flex;align-items:center;margin:16px 0 4px}
+.track .node{appearance:none;border:0;padding:0;cursor:pointer;flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:700 14px var(--f-mono);color:var(--ink);text-decoration:none;background:conic-gradient(var(--good) var(--p),var(--surface-2) 0);position:relative}
+.track .node span{position:relative;z-index:1;width:26px;height:26px;border-radius:50%;background:var(--surface);display:grid;place-items:center}
+.track .node.complete span{background:var(--good);color:#fff}
+.track .node.cur span{box-shadow:0 0 0 2px var(--accent)}
+.track i{flex:1;height:2px;background:var(--line);min-width:6px}
+.upnext{margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
+.upnext .tag,.srow .tag{display:inline-block;font:700 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:2px 8px;vertical-align:2px}
+.upnext h3{font-size:18px;margin:8px 0 4px}
+.upnext p{font-size:15px;margin-bottom:8px}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.roadmap{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+.unit-head{display:flex;gap:14px;align-items:flex-start}
+.unit-head h2{margin-bottom:4px}
+.unit-head p{margin:0;color:var(--muted)}
+.unit-num{flex:none;width:52px;height:52px;border-radius:12px;background:var(--accent-soft);display:grid;place-items:center;font:800 30px var(--f-display)}
+.unit.complete .unit-num{background:var(--good);color:#fff}
+.unit-count{margin-left:auto;font:500 13px var(--f-mono);color:var(--muted);white-space:nowrap;padding-top:4px}
+.steps{list-style:none;margin:14px 0 0;padding:0;position:relative}
+.steps::before{content:"";position:absolute;left:15px;top:20px;bottom:20px;width:2px;background:var(--line)}
+.srow{position:relative;display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:4px 14px;padding:10px 0;align-items:start}
+.srow + .srow{border-top:1px dashed var(--line)}
+.scheck{appearance:none;width:32px;height:32px;border-radius:50%;border:2px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center;position:relative;z-index:1;color:transparent;font:700 16px var(--f-body);padding:0}
+.scheck:hover{border-color:var(--muted);color:var(--line)}
+.srow.done .scheck{background:var(--good);border-color:var(--good);color:#fff}
+.srow.next .scheck{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.srow h3{margin:4px 0 2px}
+.srow h3 .snum{font:500 12px var(--f-mono);color:var(--muted);margin-right:8px}
+.srow p{margin:0;font-size:15px}
+.srow.done h3{color:var(--muted)}
+.sgoal{font-size:14px;color:var(--muted);margin-top:4px!important}
+.sgoal b{color:var(--ink);font-weight:700}
+.sgoal .meter{display:inline-block;width:80px;height:6px;border-radius:3px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden;vertical-align:1px;margin:0 6px}
+.sgoal .meter i{display:block;height:100%;background:var(--good)}
+.srow > .btn{margin-top:2px;white-space:nowrap}
+@media (max-width:560px){.srow{grid-template-columns:32px minmax(0,1fr)}.srow > .btn{grid-column:2;justify-self:start}.track .node{width:30px;height:30px}.track .node span{width:23px;height:23px}}
+.checkpoint{border-style:dashed}
+.checkpoint .steps{margin-top:8px}
+.checkpoint .next-line{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;border-top:1px solid var(--line);padding-top:14px;margin-top:6px}
+.checkpoint .next-line p{margin:0;font-size:15px}
+.checkpoint .next-line [data-tabgo]{margin-left:auto}
+
+/* ear training */
+.answers.wide{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.answers.wide button{font:700 14px var(--f-body);text-align:left;padding:10px 12px;display:flex;gap:8px;align-items:center}
+.answers.wide button .ivchip{flex:none}
+#ear-board{margin-top:8px}
+.refs{display:grid;gap:4px;font-size:14px}
+.refs div{display:flex;gap:10px;align-items:baseline}
+.refs .ivchip{flex:none}
+
+/* jam */
+.tips{margin:0;padding-left:20px;font-size:15px}
+.tips li{margin-bottom:8px}
+.jam-now{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;margin:4px 0 10px}
+.jam-chord{font:800 40px/1 var(--f-display);min-width:90px}
+.jam-now .pseq{font:500 14px var(--f-mono);display:flex;flex-wrap:wrap;gap:4px}
+.jam-now .pseq span{padding:2px 7px;border-radius:5px;background:var(--surface-2);border:1px solid var(--line)}
+.jam-now .pseq span.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}</style>
 <style>.tools{display:flex;align-items:center;gap:8px}@media (max-width:860px){.tools{margin-left:auto}}</style>
@@ -212,11 +283,14 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
   <div class="wrap">
     <div class="brand"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#1A1A1A"/><rect x="13" y="10" width="4" height="44" rx="1" fill="#EDE6D6"/><line x1="38" y1="10" x2="38" y2="54" stroke="#8C8C8C" stroke-width="2.5"/><g stroke="#F4EFE4" stroke-linecap="round"><line x1="15" y1="14" x2="56" y2="14" stroke-width="1.6"/><line x1="15" y1="21.2" x2="56" y2="21.2" stroke-width="2"/><line x1="15" y1="28.4" x2="56" y2="28.4" stroke-width="2.4"/><line x1="15" y1="35.6" x2="56" y2="35.6" stroke-width="2.8"/><line x1="15" y1="42.8" x2="56" y2="42.8" stroke-width="3.2"/><line x1="15" y1="50" x2="56" y2="50" stroke-width="3.6"/></g><circle cx="47" cy="35.6" r="7.5" fill="#F0574E" stroke="#1A1A1A" stroke-width="2.5"/></svg>Six Strings <small>Guitar theory, one fret at a time</small></div>
     <nav class="tabs" role="tablist" data-i18n-aria="aria.lessons" aria-label="Lessons">
+      <button class="tab" role="tab" data-tab="course" id="tab-course"><b><svg class="route" viewBox="0 0 12 12" aria-hidden="true"><circle cx="2.5" cy="9.5" r="1.8"/><circle cx="9.5" cy="2.5" r="1.8"/><path d="M2.5 7.7V6a2 2 0 0 1 2-2h3a2 2 0 0 0 2-2"/></svg></b><span data-i18n="tab.course"></span></button>
       <button class="tab" role="tab" data-tab="fretboard" id="tab-fretboard"><b>1</b><span data-i18n="tab.fretboard"></span></button>
       <button class="tab" role="tab" data-tab="intervals" id="tab-intervals"><b>2</b><span data-i18n="tab.intervals"></span></button>
       <button class="tab" role="tab" data-tab="scales" id="tab-scales"><b>3</b><span data-i18n="tab.scales"></span></button>
       <button class="tab" role="tab" data-tab="chords" id="tab-chords"><b>4</b><span data-i18n="tab.chords"></span></button>
       <button class="tab" role="tab" data-tab="keys" id="tab-keys"><b>5</b><span data-i18n="tab.keys"></span></button>
+      <button class="tab" role="tab" data-tab="ear" id="tab-ear"><b>6</b><span data-i18n="tab.ear"></span></button>
+      <button class="tab" role="tab" data-tab="jam" id="tab-jam"><b>7</b><span data-i18n="tab.jam"></span></button>
     </nav>
     <div class="tools">
     <div class="sound-wrap">
@@ -233,6 +307,21 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
 </header>
 
 <main class="wrap">
+
+<!-- COURSE: the roadmap. Units and steps are defined in COURSE in the script; progress is saved in this browser. -->
+<section class="lesson" id="course" role="tabpanel" hidden>
+  <div class="intro">
+    <div>
+      <div class="eyebrow" data-i18n="co.eyebrow"></div>
+      <h1 data-i18n="co.h1"></h1>
+      <p class="lead" data-i18n="co.lead"></p>
+      <p data-i18n="co.p1"></p>
+    </div>
+    <div class="panel" id="co-summary"></div>
+  </div>
+  <ol class="roadmap" id="co-units"></ol>
+  <div class="controls" style="justify-content:flex-end;margin:0"><button class="btn" type="button" id="co-reset" data-i18n="co.reset"></button></div>
+</section>
 
 <!-- 1 FRETBOARD -->
 <section class="lesson" id="fretboard" role="tabpanel">
@@ -252,7 +341,7 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
     </div>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="fb-map">
     <div class="kicker">
       <div><h2 data-i18n="fb.map.h"></h2><p class="muted" data-i18n="fb.map.p"></p></div>
       <div class="readout" id="fb-readout" aria-live="polite"></div>
@@ -270,7 +359,7 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
     <div class="panel"><h3 data-i18n="fb.t3.h"></h3><p data-i18n="fb.t3.p"></p></div>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="fb-quiz">
     <div class="quiz-top">
       <div><h2 data-i18n="qz.h"></h2><p class="muted" style="margin:0" data-i18n="qz.p"></p></div>
       <div class="score"><div><span data-i18n="qz.correct"></span><b id="qz-score">0/0</b></div><div><span data-i18n="qz.streak"></span><b id="qz-streak">0</b></div><div><span data-i18n="qz.best"></span><b id="qz-best">0</b></div></div>
@@ -284,6 +373,7 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
     <div class="answers" id="qz-answers"></div>
     <div class="feedback" id="qz-feedback" aria-live="polite"></div>
   </div>
+  <div class="panel checkpoint" data-checkpoint="fretboard"></div>
 </section>
 
 <!-- 2 INTERVALS -->
@@ -312,11 +402,12 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
     <div class="board-cap"><span class="readout" id="iv-readout"></span></div>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="iv-tbl">
     <h2 data-i18n="iv.table.h"></h2>
     <p class="muted" data-i18n="iv.table.p"></p>
     <div class="tablewrap"><table><thead><tr><th data-i18n="iv.th.frets"></th><th data-i18n="iv.th.label"></th><th data-i18n="iv.th.name"></th><th data-i18n="iv.th.what"></th></tr></thead><tbody id="iv-table"></tbody></table></div>
   </div>
+  <div class="panel checkpoint" data-checkpoint="intervals"></div>
 </section>
 
 <!-- 3 SCALES -->
@@ -337,7 +428,7 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
     </div>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="sc-explorer">
     <div class="kicker">
       <div><h2 data-i18n="sc.h"></h2><p class="muted" id="sc-sub"></p></div>
       <button class="btn primary" id="sc-play"><span class="ico"></span><span data-i18n="sc.play"></span></button>
@@ -354,6 +445,7 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
     <div class="board-cap"><div class="legend"><span><i class="lg-r"></i><span data-i18n="legend.root"></span></span><span><i class="lg-t"></i><span data-i18n="legend.3rd"></span></span><span><i class="lg-f"></i><span data-i18n="legend.5th"></span></span><span><i class="lg-s"></i><span data-i18n="legend.7th"></span></span><span><i class="lg-o"></i><span data-i18n="legend.others"></span></span></div></div>
   </div>
   <div class="callout" id="sc-callout"></div>
+  <div class="panel checkpoint" data-checkpoint="scales"></div>
 </section>
 
 <!-- 4 CHORDS -->
@@ -384,13 +476,13 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
     <div class="boardwrap" id="ch-board"></div>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="ch-pairs-panel">
     <h2 data-i18n="ch.pairs.h"></h2>
     <p data-i18n="ch.pairs.p"></p>
     <div class="pairs" id="ch-pairs"></div>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="cg-panel">
     <div class="kicker">
       <div><h2 data-i18n="cg.h"></h2>
         <p class="muted" data-i18n="cg.p"></p></div>
@@ -404,6 +496,7 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
     <div class="boardwrap" id="cg-board"></div>
     <p class="muted" style="font-size:14px;margin-top:8px" data-i18n="cg.foot"></p>
   </div>
+  <div class="panel checkpoint" data-checkpoint="chords"></div>
 </section>
 
 <!-- 5 KEYS -->
@@ -421,7 +514,7 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
     </div>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="ky-panel">
     <div class="kicker"><div><h2 data-i18n="ky.h"></h2><p class="muted" data-i18n="ky.p"></p></div></div>
     <div class="controls">
       <div class="ctl"><span data-i18n="ky.key"></span><div class="seg notes" id="ky-root"></div></div>
@@ -430,13 +523,13 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
     <div class="chords" id="ky-cards"></div>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="pr-panel">
     <h2 data-i18n="pr.h"></h2>
     <p class="muted" data-i18n="pr.p"></p>
     <div class="prog" id="ky-prog"></div>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="kf-panel">
     <h2 data-i18n="kf.h"></h2>
     <p class="muted" data-i18n="kf.p"></p>
     <div class="strip-wrap"><div class="finder" id="kf-grid"></div></div>
@@ -449,6 +542,83 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
     <div class="panel"><h3 data-i18n="ky.t2.h"></h3><p data-i18n="ky.t2.p"></p></div>
     <div class="panel"><h3 data-i18n="ky.t3.h"></h3><p data-i18n="ky.t3.p"></p></div>
   </div>
+  <div class="panel checkpoint" data-checkpoint="keys"></div>
+</section>
+
+<!-- 6 EAR TRAINING -->
+<section class="lesson" id="ear" role="tabpanel" hidden>
+  <div class="intro">
+    <div>
+      <div class="eyebrow" data-i18n="ear.eyebrow"></div>
+      <h1 data-i18n="ear.h1"></h1>
+      <p class="lead" data-i18n="ear.lead"></p>
+      <p data-i18n="ear.p1"></p>
+    </div>
+    <div class="panel">
+      <h3 data-i18n="ear.refs.h"></h3>
+      <p class="muted" style="font-size:14px" data-i18n="ear.refs.p"></p>
+      <div class="refs" id="ear-refs"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="ear-quiz">
+    <div class="quiz-top">
+      <div><h2 data-i18n="ear.h"></h2><p class="muted" style="margin:0" id="ear-sub"></p></div>
+      <div class="score"><div><span data-i18n="qz.correct"></span><b id="ear-score">0/0</b></div><div><span data-i18n="qz.streak"></span><b id="ear-streak">0</b></div><div><span data-i18n="qz.best"></span><b id="ear-best">0</b></div></div>
+    </div>
+    <div class="controls">
+      <div class="ctl"><span data-i18n="ear.test"></span><div class="seg" id="ear-mode"></div></div>
+      <div class="ctl" id="ear-set-ctl"><span data-i18n="ear.set"></span><div class="seg" id="ear-set"></div></div>
+      <button class="btn primary" type="button" id="ear-play" style="align-self:flex-end"><span class="ico"></span><span data-i18n="ear.replay"></span></button>
+    </div>
+    <div class="answers wide" id="ear-answers"></div>
+    <div class="feedback" id="ear-feedback" aria-live="polite"></div>
+    <div class="boardwrap" id="ear-board"></div>
+  </div>
+
+  <div class="grid3">
+    <div class="panel"><h3 data-i18n="ear.t1.h"></h3><p data-i18n="ear.t1.p"></p></div>
+    <div class="panel"><h3 data-i18n="ear.t2.h"></h3><p data-i18n="ear.t2.p"></p></div>
+    <div class="panel"><h3 data-i18n="ear.t3.h"></h3><p data-i18n="ear.t3.p"></p></div>
+  </div>
+  <div class="panel checkpoint" data-checkpoint="ear"></div>
+</section>
+
+<!-- 7 JAM -->
+<section class="lesson" id="jam" role="tabpanel" hidden>
+  <div class="intro">
+    <div>
+      <div class="eyebrow" data-i18n="jm.eyebrow"></div>
+      <h1 data-i18n="jm.h1"></h1>
+      <p class="lead" data-i18n="jm.lead"></p>
+      <p data-i18n="jm.p1"></p>
+    </div>
+    <div class="panel">
+      <h3 data-i18n="jm.side.h"></h3>
+      <ol class="tips" id="jm-tips"><li data-i18n="jm.side.1"></li><li data-i18n="jm.side.2"></li><li data-i18n="jm.side.3"></li></ol>
+    </div>
+  </div>
+
+  <div class="panel" id="jm-panel">
+    <div class="kicker">
+      <div><h2 data-i18n="jm.h"></h2><p class="muted" data-i18n="jm.p"></p></div>
+      <button class="btn primary" type="button" id="jm-go"></button>
+    </div>
+    <div class="controls">
+      <div class="ctl"><span data-i18n="ky.key"></span><div class="seg notes" id="jm-root"></div></div>
+      <div class="ctl"><span data-i18n="ky.mode"></span><div class="seg" id="jm-mode"></div></div>
+      <div class="ctl"><span data-i18n="jm.speed"></span><div class="seg" id="jm-speed"></div></div>
+    </div>
+    <div class="controls">
+      <div class="ctl"><span data-i18n="jm.prog"></span><div class="seg" id="jm-prog"></div></div>
+      <div class="ctl"><span data-i18n="jm.show"></span><div class="seg" id="jm-view"></div></div>
+    </div>
+    <div class="jam-now"><div class="jam-chord" id="jm-chord" aria-live="polite"></div><div class="pseq" id="jm-seq"></div></div>
+    <div class="boardwrap" id="jm-board"></div>
+    <div class="board-cap"><div class="legend" id="jm-legend"></div></div>
+  </div>
+  <div class="callout" id="jm-callout"></div>
+  <div class="panel checkpoint" data-checkpoint="jam"></div>
 </section>
 
 <div class="footer" data-i18n="footer"></div>
@@ -526,8 +696,9 @@ function play(m,when,gain){const c=ac();if(!c)return;const T=TONES[tone],t0=c.cu
   g.gain.setValueAtTime(lvl,t0);g.gain.setValueAtTime(lvl,t0+dur-fade);g.gain.exponentialRampToValueAtTime(.0001,t0+dur);
   let out=s;if(T.drive){const w=c.createWaveShaper();w.curve=driveCurve(T.drive);w.oversample='2x';const pre=c.createGain();pre.gain.value=2.2;s.connect(pre).connect(w);out=w;}
   out.connect(g).connect(master._in);s.start(t0);s.stop(t0+dur+.05);}
-function strum(frets,when){let k=0;frets.forEach((f,s)=>{if(f>=0){play(midiAt(s,f),(when||0)+k*.035,.3);k++;}});}
-let seqTimers=[];function stopSeq(){seqTimers.forEach(clearTimeout);seqTimers=[];}
+function strum(frets,when,gain){let k=0;frets.forEach((f,s)=>{if(f>=0){play(midiAt(s,f),(when||0)+k*.035,gain==null?.3:gain);k++;}});}
+const stopHooks=[]; // things that loop (the jam backing track) register here to reset their buttons when sound stops
+let seqTimers=[];function stopSeq(){seqTimers.forEach(clearTimeout);seqTimers=[];stopHooks.forEach(f=>f());}
 
 /* ---------- fretboard renderer ---------- */
 function fretX(n,frets){const nut=58,end=990,L=(end-nut)/(1-Math.pow(2,-frets/12));return nut+L*(1-Math.pow(2,-n/12));}
@@ -587,8 +758,8 @@ function strip(el,rootPc,ivs,flats,opt){
   el.innerHTML=h;}
 
 /* ---------- tabs ---------- */
-const TABS=['fretboard','intervals','scales','chords','keys'];
-function showTab(t){if(!TABS.includes(t))t='fretboard';stopSeq();TABS.forEach(x=>{$(x).hidden=x!==t;$('tab-'+x).setAttribute('aria-selected',String(x===t));});store.set('tab',t);
+const TABS=['course','fretboard','intervals','scales','chords','keys','ear','jam'];
+function showTab(t){if(!TABS.includes(t))t='course';stopSeq();TABS.forEach(x=>{$(x).hidden=x!==t;$('tab-'+x).setAttribute('aria-selected',String(x===t));});store.set('tab',t);
   try{history.replaceState(null,'','#'+t);}catch(e){}}
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{showTab(b.dataset.tab);window.scrollTo({top:0});}));
 
@@ -623,7 +794,7 @@ function qzUpdateScore(){$('qz-score').textContent=qz.score+'/'+qz.total;$('qz-s
 function qzAnswer(pc,btn){if(qz.locked)return;qz.locked=true;const{s,f}=qz.cur,ans=pcAt(s,f);qz.total++;
   if($('qz-sound').checked)play(midiAt(s,f));
   const fbk=$('qz-feedback');const name=bothNames(ans);
-  if(pc===ans){qz.score++;qz.streak++;if(qz.streak>qz.best){qz.best=qz.streak;store.set('qzBest',qz.best);}btn.classList.add('right');fbk.textContent=t('qz.yes',{name});fbk.classList.add('ok');}
+  if(pc===ans){qz.score++;qz.streak++;if(qz.streak>qz.best){qz.best=qz.streak;store.set('qzBest',qz.best);courseRefresh();}btn.classList.add('right');fbk.textContent=t('qz.yes',{name});fbk.classList.add('ok');}
   else{qz.streak=0;btn.classList.add('wrong');$('qz-answers').children[ans].classList.add('right');fbk.textContent=t('qz.no',{name,ord:t('ord')[s],pos:t('pos',{f})});fbk.classList.add('no');}
   board($('qz-board'),{frets:12,dots:[{s,f,cls:pc===ans?'iv-f':'iv-r',label:noteS(ans),r:13}],aria:t('qz.aria')});
   qzUpdateScore();setTimeout(qzNext,pc===ans?900:2000);}
@@ -768,7 +939,8 @@ const PROGS={ // descriptions live in i18n
   {n:'i – VII – VI – VII',seq:[0,6,5,6]},
   {n:'i – iv – VII – III',seq:[0,3,6,2]}]};
 const ky={root:7,mode:'major',playing:-1};
-function keyChords(){const M=MODES[ky.mode],fl=usesFlats(ky.root,ky.mode==='minor');return M.ivs.map((iv0,i)=>{const r=(ky.root+iv0)%12,q=M.q[i];return{r,q,rn:M.rn[i],name:nn(r,fl)+(q==='min'?'m':q==='dim'?'°':''),frets:voicing(r,q),fl};});}
+function keyChords(){return keyChordsFor(ky.root,ky.mode);}
+function keyChordsFor(root,mode){const M=MODES[mode],fl=usesFlats(root,mode==='minor');return M.ivs.map((iv0,i)=>{const r=(root+iv0)%12,q=M.q[i];return{r,q,rn:M.rn[i],name:nn(r,fl)+(q==='min'?'m':q==='dim'?'°':''),frets:voicing(r,q),fl};});}
 function drawKY(){const cs=keyChords();
   $('ky-cards').innerHTML=cs.map((c,i)=>`<button class="chordcard" type="button" data-i="${i}"><span class="rn">${c.rn}</span><span class="cn">${c.name}</span>${chordBox(c.frets,c.r,{aria:t('aria.chord',{name:c.name})})}<span class="sub">${t('q.'+c.q)}</span></button>`).join('');
   const PT=t('progs')[ky.mode];
@@ -797,6 +969,137 @@ function findKeys(){const out=$('kf-results');if(!kf.size){out.innerHTML=`<p cla
     return `<div class="result${i===0&&top===sel.length&&shown.length===1?' best':''}"><b>${t('kf.key',{key:nn(r.k,fl)})}</b><span class="muted">${t('kf.rel',{rel:nn(rel,fl),relChord:nn(rel,fl)+'m'})}</span></div>`;}).join('');}
 $('kf-clear').addEventListener('click',()=>{kf.clear();drawKF();});
 drawKF();RENDER.push(drawKF);
+
+/* ========== 6. EAR TRAINING ========== */
+const EAR_SETS={starter:[3,4,5,7,12],all:[1,2,3,4,5,6,7,8,9,10,11,12]};
+const ear={mode:'iv',set:'starter',score:0,total:0,streak:0,best:Object.assign({iv:0,chord:0},store.get('earBest',{})),cur:null,locked:false};
+function earChoices(){return ear.mode==='iv'?EAR_SETS[ear.set]:['maj','min'];}
+function earName(v){return ear.mode==='iv'?ivName(v):t(v==='maj'?'major':'minor');}
+function earSpot(m,near,minS){let best=null;for(let s=minS||0;s<6;s++){const f=m-TUNING[s];if(f<0||f>15)continue;const d=near==null?(f<=9?0:f):Math.abs(f-near);if(!best||d<best.d)best={s,f,d};}return best;}
+function earPlay(){const q=ear.cur;if(!q)return;stopSeq();ac();if(q.kind==='iv'){play(q.m,0);play(q.m+q.ans,.7);}else strum(q.frets);}
+function earNext(autoplay){ear.locked=false;$('ear-feedback').textContent='';$('ear-feedback').className='feedback';$('ear-board').innerHTML='';
+  const ch=earChoices();let ans;do{ans=ch[Math.floor(Math.random()*ch.length)];}while(ear.cur&&ch.length>2&&ans===ear.cur.ans);
+  if(ear.mode==='iv')ear.cur={kind:'iv',m:45+Math.floor(Math.random()*12),ans};
+  else{const r=Math.floor(Math.random()*12);ear.cur={kind:'chord',r,ans,frets:voicing(r,ans)};}
+  [...$('ear-answers').children].forEach(b=>b.classList.remove('right','wrong'));if(autoplay)earPlay();}
+function earShow(){const q=ear.cur;if(!q||!ear.locked)return;let dots;
+  if(q.kind==='iv'){const a=earSpot(q.m),b=earSpot(q.m+q.ans,a.f,a.s);dots=[{s:a.s,f:a.f,cls:'iv-r',label:t('rootShort')},{s:b.s,f:b.f,cls:'iv-'+(q.ans===12?'r':ivCls(q.ans)),label:ivSh(q.ans)}];}
+  else dots=q.frets.map((f,s)=>f>=0?ivDot(s,f,q.r,'iv',false):null).filter(Boolean);
+  board($('ear-board'),{dots,aria:t('ear.aria'),onClick:(s,f)=>play(midiAt(s,f))});}
+function earScore(){$('ear-score').textContent=ear.score+'/'+ear.total;$('ear-streak').textContent=ear.streak;$('ear-best').textContent=ear.best[ear.mode];}
+function earAnswer(v,btn){if(ear.locked||!ear.cur)return;ear.locked=true;const q=ear.cur,fbk=$('ear-feedback'),ok=v===q.ans;ear.total++;
+  const song=q.kind==='iv'&&t('ear.refs')[q.ans],like=song?' '+t('ear.like',{song}):'';
+  if(ok){ear.score++;ear.streak++;btn.classList.add('right');fbk.textContent=t('ear.yes',{name:earName(q.ans)})+like;fbk.classList.add('ok');
+    if(ear.streak>ear.best[ear.mode]){ear.best[ear.mode]=ear.streak;store.set('earBest',ear.best);courseRefresh();}}
+  else{ear.streak=0;btn.classList.add('wrong');const r=$('ear-answers').querySelector(`[data-v="${q.ans}"]`);if(r)r.classList.add('right');fbk.textContent=t('ear.no',{name:earName(q.ans)})+like;fbk.classList.add('no');earPlay();}
+  earShow();earScore();seqTimers.push(setTimeout(()=>earNext(true),ok?1600:3600));}
+function earAnswersUI(){const el=$('ear-answers');el.innerHTML='';earChoices().forEach(v=>{const b=document.createElement('button');b.type='button';b.dataset.v=v;
+  if(ear.mode==='iv'){const c=v===12?'r':ivCls(v);b.innerHTML=`<span class="ivchip bg-${c}${c==='t'?' t':''}">${ivSh(v)}</span>${ivName(v)}`;}else b.textContent=earName(v);
+  b.addEventListener('click',()=>earAnswer(v,b));el.appendChild(b);});}
+function earControls(){seg($('ear-mode'),[{label:t('ear.mode.iv'),value:'iv'},{label:t('ear.mode.chord'),value:'chord'}],ear.mode,v=>{ear.mode=v;earReset();});
+  seg($('ear-set'),['starter','all'].map(v=>({label:t('ear.set.'+v),value:v})),ear.set,v=>{ear.set=v;earReset();});
+  $('ear-set-ctl').hidden=ear.mode!=='iv';$('ear-sub').textContent=t('ear.sub.'+ear.mode);earAnswersUI();earScore();earShow();
+  const R=t('ear.refs');$('ear-refs').innerHTML=R.map((song,i)=>{if(!song)return'';const c=i===12?'r':ivCls(i);return `<div><span class="ivchip bg-${c}${c==='t'?' t':''}">${ivSh(i)}</span><span><b>${ivName(i)}</b> · ${song}</span></div>`;}).join('');}
+function earReset(){stopSeq();Object.assign(ear,{score:0,total:0,streak:0,cur:null});earControls();earNext(false);}
+function setEar(mode,set){ear.mode=mode;if(set)ear.set=set;earReset();}
+$('ear-play').addEventListener('click',()=>{if(ear.locked)earNext(true);else earPlay();});
+earControls();earNext(false);RENDER.push(earControls);
+
+/* ========== 7. JAM: a backing loop, one chord per bar, with the pentatonic of the key on the board ========== */
+const SPEEDS={slow:70,medium:90,fast:110}; // beats per minute
+const jm={root:9,mode:'minor',prog:0,speed:'slow',view:'scale',on:false,bar:0,next:0};
+function jmCur(){const sq=PROGS[jm.mode][jm.prog].seq;return sq[jm.bar%sq.length];}
+function drawJM(){const P=PROGS[jm.mode][jm.prog],cs=keyChordsFor(jm.root,jm.mode),fl=usesFlats(jm.root,jm.mode==='minor'),c=cs[jmCur()];
+  const pent=jm.mode==='minor'?'minPent':'majPent',scale=SCALES[pent].ivs.map(i=>(jm.root+i)%12),tones=CTYPES[c.q].ivs.map(i=>(c.r+i)%12),dots=[];
+  for(let s=0;s<6;s++)for(let f=0;f<=17;f++){const pc=pcAt(s,f);
+    if(jm.view==='tones'){if(tones.includes(pc))dots.push(ivDot(s,f,c.r,'iv',fl));else if(scale.includes(pc))dots.push({s,f,cls:'plain',label:nn(pc,fl),ghost:true});}
+    else if(scale.includes(pc))dots.push(ivDot(s,f,jm.root,'iv',fl));}
+  board($('jm-board'),{frets:17,dots,aria:t('jm.aria'),onClick:(s,f)=>play(midiAt(s,f))});
+  $('jm-chord').textContent=c.name;
+  $('jm-seq').innerHTML=P.seq.map((ci,k)=>`<span class="${jm.on&&k===jm.bar%P.seq.length?'on':''}">${cs[ci].name}</span>`).join('');
+  const lg=(c2,k)=>`<span><i class="lg-${c2}"></i><span>${k}</span></span>`;
+  $('jm-legend').innerHTML=jm.view==='tones'?lg('r',t('jm.lg.root'))+lg('t',t('legend.3rd'))+lg('f',t('legend.5th'))+`<span><i style="background:var(--inlay);opacity:.5"></i><span>${t('jm.lg.other')}</span></span>`
+    :lg('r',t('legend.root'))+lg('t',t('legend.3rd'))+lg('f',t('legend.5th'))+lg('s',t('legend.7th'))+lg('o',t('legend.others'));
+  const key=nn(jm.root,fl)+' '+t(jm.mode).toLowerCase();
+  $('jm-callout').innerHTML=jm.view==='tones'?t('jm.call.tones',{chord:c.name}):t('jm.call.scale',{root:nn(jm.root,fl),scale:scName(pent).toLowerCase(),key});
+  const b=$('jm-go');b.innerHTML=jm.on?t('stop'):'<span class="ico"></span>'+t('jm.start');}
+function jmBar(){if(!jm.on)return;const c=ac();if(!c)return;const beat=60/SPEEDS[jm.speed],ch=keyChordsFor(jm.root,jm.mode)[jmCur()];
+  if(jm.next<c.currentTime+.02)jm.next=c.currentTime+.05;const off=jm.next-c.currentTime;drawJM();
+  let bass=40;while(bass%12!==ch.r)bass++;play(bass,off,.5);
+  for(let k=0;k<4;k++)strum(ch.frets,off+k*beat,k===0?.26:.14);
+  jm.next+=4*beat;seqTimers.push(setTimeout(()=>{jm.bar++;jmBar();},Math.max(0,(jm.next-c.currentTime-.12)*1000)));}
+stopHooks.push(()=>{if(jm.on){jm.on=false;jm.bar=0;drawJM();}});
+$('jm-go').addEventListener('click',()=>{if(jm.on){stopSeq();return;}stopSeq();jm.on=true;jm.bar=0;jm.next=0;jmBar();});
+function jmControls(){seg($('jm-root'),rootItems(),jm.root,v=>{jm.root=v;drawJM();});
+  seg($('jm-mode'),[{label:t('major'),value:'major'},{label:t('minor'),value:'minor'}],jm.mode,v=>{jm.mode=v;jm.prog=0;jm.bar=0;jmControls();drawJM();});
+  const PT=t('progs')[jm.mode];seg($('jm-prog'),PROGS[jm.mode].map((p,i)=>({label:PT[i].name||p.n,value:i})),jm.prog,v=>{jm.prog=v;jm.bar=0;drawJM();});
+  seg($('jm-speed'),Object.keys(SPEEDS).map(k=>({label:t('jm.speed.'+k),value:k,title:SPEEDS[k]+' bpm'})),jm.speed,v=>{jm.speed=v;});
+  seg($('jm-view'),['scale','tones'].map(v=>({label:t('jm.view.'+v),value:v})),jm.view,v=>{jm.view=v;drawJM();});}
+function setJM(view){jm.view=view;jmControls();drawJM();}
+jmControls();drawJM();RENDER.push(jmControls,drawJM);
+
+/* ========== COURSE: the roadmap. Units hold steps; a step opens a tab (scrolled to `at`), can set it up with go(),
+   and auto() returns [best so far, target] for goals the app can check by itself. Text lives in i18n as cu.<unit>.* and cs.<step>.* ========== */
+function setSC(root,type,pos){Object.assign(sc,{root,type,pos,label:'iv'});scControls();drawSC();}
+const COURSE=[
+  {id:'neck',steps:[
+    {id:'notes',tab:'fretboard'},
+    {id:'natural',tab:'fretboard',at:'fb-map',go(){fb.mode='natural';fbControls();drawFB();}},
+    {id:'quiz',tab:'fretboard',at:'fb-quiz',auto:()=>[qz.best,10]}]},
+  {id:'dist',steps:[
+    {id:'power',tab:'intervals',go(){Object.assign(iv,{s:1,f:3,semi:7});drawIV();}},
+    {id:'twelve',tab:'intervals',at:'iv-tbl'},
+    {id:'hear',tab:'ear',at:'ear-quiz',go(){setEar('iv','starter');},auto:()=>[ear.best.iv,5]}]},
+  {id:'scales',steps:[
+    {id:'box',tab:'scales',at:'sc-explorer',go(){setSC(9,'minPent',1);}},
+    {id:'shapes',tab:'scales',at:'sc-explorer',go(){setSC(9,'minPent',2);}},
+    {id:'major',tab:'scales',go(){setSC(0,'major',0);}},
+    {id:'blues',tab:'scales',at:'sc-explorer',go(){setSC(9,'blues',1);}}]},
+  {id:'chords',steps:[
+    {id:'build',tab:'chords',go(){ch.root=0;ch.type='maj';chControls();drawCH();}},
+    {id:'majmin',tab:'ear',at:'ear-quiz',go(){setEar('chord');},auto:()=>[ear.best.chord,8]},
+    {id:'caged',tab:'chords',at:'cg-panel',go(){Object.assign(cg,{root:7,q:'maj',sel:'E'});cgControls();drawCG();}}]},
+  {id:'keys',steps:[
+    {id:'family',tab:'keys',go(){ky.root=7;ky.mode='major';kyControls();drawKY();}},
+    {id:'progs',tab:'keys',at:'pr-panel'},
+    {id:'findkey',tab:'keys',at:'kf-panel'}]},
+  {id:'jam',steps:[
+    {id:'jam',tab:'jam',go(){setJM('scale');}},
+    {id:'targets',tab:'jam',at:'jm-panel',go(){setJM('tones');}}]}];
+const STEPS=[];COURSE.forEach((u,ui)=>u.steps.forEach((st,si)=>{st.unit=u;st.num=(ui+1)+'.'+(si+1);STEPS.push(st);}));
+let prog=store.get('course',{}); // step id -> 1 done, 0 unticked by hand (so an auto goal doesn't tick it again)
+function done(st){return prog[st.id]===1;}
+function nextStep(){return STEPS.find(st=>!done(st))||null;}
+function openStep(st){showTab(st.tab);if(st.go)st.go();const el=st.at&&$(st.at);
+  requestAnimationFrame(()=>{if(el)el.scrollIntoView({behavior:'smooth',block:'start'});else window.scrollTo({top:0});});}
+function stepRow(st,nxt,openKey){const d=done(st),a=st.auto&&st.auto(),T=k=>t('cs.'+st.id+'.'+k);
+  const meter=a?`<span class="meter"><i style="width:${Math.min(100,a[0]/a[1]*100)}%"></i></span>${t('co.best',{n:Math.min(a[0],a[1]),of:a[1]})}`:'';
+  return `<li class="srow${d?' done':''}${st===nxt?' next':''}"><button class="scheck" type="button" data-toggle="${st.id}" aria-pressed="${d}" aria-label="${t('co.markDone',{name:T('h')})}" title="${t('co.markDone',{name:T('h')})}">✓</button>`
+    +`<div><h3><span class="snum">${st.num}</span>${T('h')}${st===nxt?` <span class="tag">${t('co.next')}</span>`:''}</h3><p>${T('p')}</p><p class="sgoal"><b>${t('co.goal')}</b> ${T('goal')} ${meter}</p></div>`
+    +`<button class="btn" type="button" data-open="${st.id}">${t(openKey)} →</button></li>`;}
+function drawCourse(){const nxt=nextStep(),n=STEPS.filter(done).length;
+  const track=COURSE.map((u,i)=>{const k=u.steps.filter(done).length,all=k===u.steps.length;
+    return (i?'<i></i>':'')+`<button type="button" class="node${all?' complete':''}${nxt&&nxt.unit===u?' cur':''}" data-unit="${u.id}" style="--p:${k/u.steps.length*100}%" title="${t('co.unit',{n:i+1})}: ${t('cu.'+u.id+'.h')}" aria-label="${t('co.unit',{n:i+1})}: ${t('cu.'+u.id+'.h')} (${k}/${u.steps.length})"><span>${all?'✓':i+1}</span></button>`;}).join('');
+  const T=k=>t('cs.'+nxt.id+'.'+k);
+  $('co-summary').innerHTML=`<div class="bigcount">${n}<small>${t('co.of',{n:STEPS.length})}</small></div><div class="bar" style="margin-top:10px"><i style="width:${n/STEPS.length*100}%"></i></div><div class="track">${track}</div>`
+    +`<div class="upnext">${nxt?`<span class="tag">${t('co.next')}</span><h3>${nxt.num} · ${T('h')}</h3><p>${T('p')}</p><p class="sgoal"><b>${t('co.goal')}</b> ${T('goal')}</p><div class="btnrow"><button class="btn primary" type="button" data-open="${nxt.id}">${t('co.start')} →</button><button class="btn" type="button" data-toggle="${nxt.id}">${t('co.done')}</button></div>`
+      :`<h3>${t('co.finished.h')}</h3><p>${t('co.finished.p')}</p>`}</div>`;
+  $('co-units').innerHTML=COURSE.map((u,i)=>{const k=u.steps.filter(done).length;
+    return `<li class="panel unit${k===u.steps.length?' complete':''}" id="unit-${u.id}"><div class="unit-head"><div class="unit-num">${i+1}</div><div><div class="eyebrow">${t('co.unit',{n:i+1})}</div><h2>${t('cu.'+u.id+'.h')}</h2><p>${t('cu.'+u.id+'.p')}</p></div><div class="unit-count">${k}/${u.steps.length}</div></div><ol class="steps">${u.steps.map(st=>stepRow(st,nxt,'co.open')).join('')}</ol></li>`;}).join('');
+  document.querySelectorAll('[data-checkpoint]').forEach(el=>{const tab=el.dataset.checkpoint,mine=STEPS.filter(st=>st.tab===tab);
+    const next=!nxt?`<p>${t('co.finished.h')}</p>`:nxt.tab===tab?`<p>${t('co.cp.here')}</p>`
+      :`<p><b>${t('co.next')}:</b> ${nxt.num} · ${t('cs.'+nxt.id+'.h')}</p><button class="btn primary" type="button" data-open="${nxt.id}">${t('co.continue')} →</button>`;
+    el.innerHTML=`<h2>${t('co.cp.h')}</h2><p class="muted">${t('co.cp.p')}</p><ol class="steps">${mine.map(st=>stepRow(st,nxt,'co.show')).join('')}</ol><div class="next-line">${next}<button class="btn" type="button" data-tabgo="course">${t('co.back')}</button></div>`;});
+  TABS.forEach(tab=>{const mine=STEPS.filter(st=>st.tab===tab);$('tab-'+tab).classList.toggle('done',mine.length>0&&mine.every(done));});}
+function courseRefresh(){STEPS.forEach(st=>{if(st.auto&&prog[st.id]==null){const a=st.auto();if(a[0]>=a[1])prog[st.id]=1;}});store.set('course',prog);drawCourse();}
+document.querySelector('main').addEventListener('click',e=>{const b=e.target.closest('[data-toggle],[data-open],[data-tabgo],[data-unit]');if(!b)return;
+  if(b.dataset.toggle){const id=b.dataset.toggle,st=STEPS.find(x=>x.id===id),box=b.closest('[data-checkpoint],#co-units');prog[id]=done(st)?0:1;store.set('course',prog);drawCourse();
+    const again=box&&box.querySelector(`[data-toggle="${id}"]`);if(again)again.focus();}
+  else if(b.dataset.open)openStep(STEPS.find(x=>x.id===b.dataset.open));
+  else if(b.dataset.tabgo){showTab(b.dataset.tabgo);window.scrollTo({top:0});}
+  else if(b.dataset.unit)$('unit-'+b.dataset.unit).scrollIntoView({behavior:'smooth',block:'start'});});
+$('co-reset').addEventListener('click',()=>{if(!confirm(t('co.reset.q')))return;prog={};qz.best=0;store.set('qzBest',0);qzUpdateScore();ear.best={iv:0,chord:0};store.set('earBest',ear.best);earScore();store.set('course',prog);drawCourse();window.scrollTo({top:0});});
+courseRefresh();RENDER.push(drawCourse);
 
 /* sound settings: tone and note length, saved per browser. Labels live in i18n under 'sound'. */
 const SOUND_ICON='<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>';
@@ -851,7 +1154,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('lang-panel').hi
 applyStatic();drawLang();RENDER.unshift(applyStatic);RENDER.push(drawLang);
 
 /* boot */
-const h=(location.hash||'').slice(1);showTab(TABS.includes(h)?h:store.get('tab','fretboard'));
+const h=(location.hash||'').slice(1);showTab(TABS.includes(h)?h:store.get('tab','course'));
 })();
 </script>
 </body>
