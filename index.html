@@ -16,8 +16,8 @@
 <style>
 /* Layout: sticky amp-panel header with 5 numbered lessons; each lesson = short reading column + a live fretboard you can click and hear. */
 :root{
-  --bg:#ECEEF1; --surface:#FFFFFF; --surface-2:#F5F6F8; --ink:#181B21; --muted:#596070; --line:#D5D9E0;
-  --accent:#0E6B60; --accent-ink:#FFFFFF; --accent-soft:#D6EDE9;
+  --bg:#F2F2F2; --surface:#FFFFFF; --surface-2:#F6F6F6; --ink:#141414; --muted:#5E5E5E; --line:#DCDCDC;
+  --accent:#141414; --accent-ink:#FFFFFF; --accent-soft:#ECECEC;
   --wood:#3B2418; --wood-2:#4A2E1F; --fret:#B9BEC6; --string:#D9D2C3; --inlay:#E8E2D6; --nut:#EDE6D6; --board-text:#C9BBA8;
   --iv-r:#D23B33; --iv-t:#E3A21A; --iv-f:#2C6FCC; --iv-s:#8650C4; --iv-o:#6E7684; --iv-ink:#FFFFFF; --iv-t-ink:#2A1E00;
   --good:#1E8A4C; --bad:#C2372F;
@@ -26,14 +26,14 @@
   --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#111317; --surface:#1A1D23; --surface-2:#22262D; --ink:#E7E9EE; --muted:#9CA3B0; --line:#333944;
-  --accent:#3CC2AE; --accent-ink:#06201C; --accent-soft:#16352F;
+  --bg:#0D0D0D; --surface:#171717; --surface-2:#202020; --ink:#EDEDED; --muted:#9A9A9A; --line:#2F2F2F;
+  --accent:#EDEDED; --accent-ink:#111111; --accent-soft:#262626;
   --wood:#2A190F; --wood-2:#352014; --fret:#8E949D; --string:#BDB6A6; --inlay:#BFB8AA; --nut:#CFC7B4; --board-text:#A99A86;
   --iv-r:#F0574E; --iv-t:#F2B53A; --iv-f:#4D8DF0; --iv-s:#A57AE6; --iv-o:#7F8796; --iv-ink:#FFFFFF; --iv-t-ink:#2A1E00;
   --good:#3DBB72; --bad:#F06B62; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#111317; --surface:#1A1D23; --surface-2:#22262D; --ink:#E7E9EE; --muted:#9CA3B0; --line:#333944;
-  --accent:#3CC2AE; --accent-ink:#06201C; --accent-soft:#16352F;
+  --bg:#0D0D0D; --surface:#171717; --surface-2:#202020; --ink:#EDEDED; --muted:#9A9A9A; --line:#2F2F2F;
+  --accent:#EDEDED; --accent-ink:#111111; --accent-soft:#262626;
   --wood:#2A190F; --wood-2:#352014; --fret:#8E949D; --string:#BDB6A6; --inlay:#BFB8AA; --nut:#CFC7B4; --board-text:#A99A86;
   --iv-r:#F0574E; --iv-t:#F2B53A; --iv-f:#4D8DF0; --iv-s:#A57AE6; --iv-o:#7F8796; --iv-ink:#FFFFFF; --iv-t-ink:#2A1E00;
   --good:#3DBB72; --bad:#F06B62; color-scheme:dark}
@@ -47,7 +47,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .top .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px;padding-block:10px}
 .brand{font-family:var(--f-display);font-weight:800;font-size:28px;letter-spacing:.02em;text-transform:uppercase;line-height:1;display:flex;align-items:baseline;gap:10px}
 .brand small{font-family:var(--f-body);font-weight:400;font-size:13px;letter-spacing:0;text-transform:none;color:var(--muted)}
-.brand svg{width:30px;height:30px;flex:none;align-self:center;border-radius:7px}
+.brand svg{width:30px;height:30px;flex:none;align-self:center;border-radius:7px;box-shadow:0 0 0 1px var(--line)}
 .theme-btn{appearance:none;font:inherit;font-size:13px;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);padding:6px 10px;border-radius:999px;cursor:pointer;white-space:nowrap}
 .theme-btn:hover{border-color:var(--muted)}
 .theme-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -209,7 +209,7 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
 
 <header class="top">
   <div class="wrap">
-    <div class="brand"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#0E6B60"/><rect x="13" y="10" width="4" height="44" rx="1" fill="#EDE6D6"/><line x1="38" y1="10" x2="38" y2="54" stroke="#9FD3CA" stroke-width="2.5"/><g stroke="#F4EFE4" stroke-linecap="round"><line x1="15" y1="14" x2="56" y2="14" stroke-width="1.6"/><line x1="15" y1="21.2" x2="56" y2="21.2" stroke-width="2"/><line x1="15" y1="28.4" x2="56" y2="28.4" stroke-width="2.4"/><line x1="15" y1="35.6" x2="56" y2="35.6" stroke-width="2.8"/><line x1="15" y1="42.8" x2="56" y2="42.8" stroke-width="3.2"/><line x1="15" y1="50" x2="56" y2="50" stroke-width="3.6"/></g><circle cx="47" cy="35.6" r="7.5" fill="#F0574E" stroke="#0E6B60" stroke-width="2.5"/></svg>Six Strings <small>Guitar theory, one fret at a time</small></div>
+    <div class="brand"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#1A1A1A"/><rect x="13" y="10" width="4" height="44" rx="1" fill="#EDE6D6"/><line x1="38" y1="10" x2="38" y2="54" stroke="#8C8C8C" stroke-width="2.5"/><g stroke="#F4EFE4" stroke-linecap="round"><line x1="15" y1="14" x2="56" y2="14" stroke-width="1.6"/><line x1="15" y1="21.2" x2="56" y2="21.2" stroke-width="2"/><line x1="15" y1="28.4" x2="56" y2="28.4" stroke-width="2.4"/><line x1="15" y1="35.6" x2="56" y2="35.6" stroke-width="2.8"/><line x1="15" y1="42.8" x2="56" y2="42.8" stroke-width="3.2"/><line x1="15" y1="50" x2="56" y2="50" stroke-width="3.6"/></g><circle cx="47" cy="35.6" r="7.5" fill="#F0574E" stroke="#1A1A1A" stroke-width="2.5"/></svg>Six Strings <small>Guitar theory, one fret at a time</small></div>
     <nav class="tabs" role="tablist" aria-label="Lessons">
       <button class="tab" role="tab" data-tab="fretboard" id="tab-fretboard"><b>1</b>Fretboard</button>
       <button class="tab" role="tab" data-tab="intervals" id="tab-intervals"><b>2</b>Intervals</button>
@@ -805,7 +805,7 @@ const THEME_LABEL={auto:'Auto',light:'Light',dark:'Dark'};
 let theme=store.get('theme','auto');if(!THEME_LABEL[theme])theme='auto';
 const darkMQ=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
 function applyTheme(){const root=document.documentElement;if(theme==='auto')root.removeAttribute('data-theme');else root.setAttribute('data-theme',theme);
-  const isDark=theme==='dark'||(theme==='auto'&&darkMQ&&darkMQ.matches);$('theme-color').setAttribute('content',isDark?'#1A1D23':'#FFFFFF');
+  const isDark=theme==='dark'||(theme==='auto'&&darkMQ&&darkMQ.matches);$('theme-color').setAttribute('content',isDark?'#171717':'#FFFFFF');
   const b=$('theme-btn');b.innerHTML=`<svg viewBox="0 0 24 24" aria-hidden="true">${THEME_ICON[theme]}</svg><span class="tl">${THEME_LABEL[theme]}</span>`;
   b.title=`Theme: ${THEME_LABEL[theme]}${theme==='auto'?' (matches your device)':''}. Click to change.`;}
 $('theme-btn').addEventListener('click',()=>{theme={auto:'light',light:'dark',dark:'auto'}[theme];store.set('theme',theme);applyTheme();});
