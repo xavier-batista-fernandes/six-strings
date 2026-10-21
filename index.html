@@ -51,7 +51,12 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .theme-btn{appearance:none;font:inherit;font-size:13px;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);padding:6px 10px;border-radius:999px;cursor:pointer;white-space:nowrap}
 .theme-btn:hover{border-color:var(--muted)}
 .theme-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-@media (max-width:860px){nav.tabs{order:3;flex-basis:100%;margin-left:0}.theme-btn{margin-left:auto}}
+.sound-wrap{position:relative}
+.sound-panel{position:absolute;right:0;top:calc(100% + 8px);z-index:6;width:min(300px,calc(100vw - 32px));background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.sound-panel h4{margin:0 0 6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sound-panel .seg+h4{margin-top:14px}
+.sound-panel p{margin:8px 0 0;font-size:13px;color:var(--muted)}
+@media (max-width:860px){nav.tabs{order:3;flex-basis:100%;margin-left:0}.sound-wrap{margin-left:auto}}
 @media (max-width:560px){.theme-btn .tl{display:none}.brand small{display:none}}
 nav.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-left:auto;max-width:100%}
 nav.tabs::-webkit-scrollbar{display:none}
@@ -212,6 +217,10 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
       <button class="tab" role="tab" data-tab="chords" id="tab-chords"><b>4</b>Chords</button>
       <button class="tab" role="tab" data-tab="keys" id="tab-keys"><b>5</b>Keys</button>
     </nav>
+    <div class="sound-wrap">
+      <button class="theme-btn" type="button" id="sound-btn" aria-haspopup="true" aria-expanded="false" aria-controls="sound-panel"></button>
+      <div class="sound-panel" id="sound-panel" hidden></div>
+    </div>
     <button class="theme-btn" type="button" id="theme-btn" aria-label="Color theme"></button>
   </div>
 </header>
@@ -435,7 +444,7 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
   </div>
 </section>
 
-<div class="footer">Standard tuning (E A D G B E). Sounds are synthesized in your browser, so tap a play button first if audio is silent. Your quiz best streak is saved in this browser only.</div>
+<div class="footer">Standard tuning (E A D G B E). Sounds are synthesized in your browser, so tap a play button first if audio is silent. Change the tone and note length with the Sound button. Your quiz best streak is saved in this browser only.</div>
 </main>
 
 <script>
@@ -473,20 +482,36 @@ function pcAt(s,f){return midiAt(s,f)%12;}
 const store={get(k,d){try{const v=localStorage.getItem('sixstrings:'+k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem('sixstrings:'+k,JSON.stringify(v));}catch(e){}}};
 const $=id=>document.getElementById(id);
 
-/* ---------- audio: Karplus-Strong plucked string ---------- */
+/* ---------- audio: Karplus-Strong plucked string, with tone presets and note length ---------- */
+/* smooth: how much the pluck noise is softened (higher = mellower attack); decay: string damping per pass;
+   cut: lowpass cutoff in Hz; drive: waveshaper amount for overdrive (0 = clean); vol: level trim */
+const TONES={
+  acoustic:{smooth:.5,decay:[.996,.9975],cut:4200,drive:0,vol:1},
+  nylon:{smooth:.82,decay:[.9945,.996],cut:2400,drive:0,vol:1.15},
+  clean:{smooth:.3,decay:[.9982,.9988],cut:3000,drive:0,vol:.95},
+  overdrive:{smooth:.35,decay:[.9985,.999],cut:2600,drive:9,vol:.5}};
+const LENGTHS={short:.55,medium:1.1,long:2.4}; /* seconds a note rings before fading out */
+let tone=store.get('tone','acoustic');if(!TONES[tone])tone='acoustic';
+let noteLen=store.get('noteLen','short');if(!LENGTHS[noteLen])noteLen='short';
 let actx=null,master=null;const bufs={};
 function ac(){
   if(!actx){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;actx=new C();
-    const lp=actx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=4200;master=actx.createGain();master.gain.value=.8;lp.connect(master).connect(actx.destination);master._in=lp;}
+    const lp=actx.createBiquadFilter();lp.type='lowpass';master=actx.createGain();master.gain.value=.8;lp.connect(master).connect(actx.destination);master._in=lp;}
   if(actx.state==='suspended')actx.resume();return actx;}
+function driveCurve(k){const n=1024,c=new Float32Array(n);for(let i=0;i<n;i++){const x=i/(n-1)*2-1;c[i]=Math.tanh(k*x)/Math.tanh(k);}return c;}
 function pluckBuf(m){
-  if(bufs[m])return bufs[m];const c=actx,sr=c.sampleRate,f=440*Math.pow(2,(m-69)/12);
+  const key=tone+':'+m;if(bufs[key])return bufs[key];const T=TONES[tone],c=actx,sr=c.sampleRate,f=440*Math.pow(2,(m-69)/12);
   const N=Math.max(2,Math.round(sr/f)),len=Math.floor(sr*2.4),b=c.createBuffer(1,len,sr),d=b.getChannelData(0);
-  const ring=new Float32Array(N);let prev=0;for(let i=0;i<N;i++){const r=Math.random()*2-1;prev=prev*.5+r*.5;ring[i]=prev;}
-  const decay=m>70?.9975:.996;let idx=0;
+  const ring=new Float32Array(N);let prev=0;for(let i=0;i<N;i++){const r=Math.random()*2-1;prev=prev*T.smooth+r*(1-T.smooth);ring[i]=prev;}
+  const decay=m>70?T.decay[1]:T.decay[0];let idx=0;
   for(let i=0;i<len;i++){const nx=(idx+1)%N;const v=ring[idx];ring[idx]=decay*.5*(ring[idx]+ring[nx]);d[i]=v;idx=nx;}
-  bufs[m]=b;return b;}
-function play(m,when,gain){const c=ac();if(!c)return;const s=c.createBufferSource();s.buffer=pluckBuf(m);const g=c.createGain();g.gain.value=gain==null?.42:gain;s.connect(g).connect(master._in);s.start(c.currentTime+(when||0));}
+  bufs[key]=b;return b;}
+function play(m,when,gain){const c=ac();if(!c)return;const T=TONES[tone],t0=c.currentTime+(when||0),dur=LENGTHS[noteLen],fade=Math.min(.25,dur*.4);
+  master._in.frequency.value=T.cut;
+  const s=c.createBufferSource();s.buffer=pluckBuf(m);const g=c.createGain();const lvl=(gain==null?.42:gain)*T.vol;
+  g.gain.setValueAtTime(lvl,t0);g.gain.setValueAtTime(lvl,t0+dur-fade);g.gain.exponentialRampToValueAtTime(.0001,t0+dur);
+  let out=s;if(T.drive){const w=c.createWaveShaper();w.curve=driveCurve(T.drive);w.oversample='2x';const pre=c.createGain();pre.gain.value=2.2;s.connect(pre).connect(w);out=w;}
+  out.connect(g).connect(master._in);s.start(t0);s.stop(t0+dur+.05);}
 function strum(frets,when){let k=0;frets.forEach((f,s)=>{if(f>=0){play(midiAt(s,f),(when||0)+k*.035,.3);k++;}});}
 let seqTimers=[];function stopSeq(){seqTimers.forEach(clearTimeout);seqTimers=[];}
 
@@ -752,6 +777,25 @@ function findKeys(){const out=$('kf-results');if(!kf.size){out.innerHTML='<p cla
     return `<div class="result${i===0&&top===sel.length&&shown.length===1?' best':''}"><b>${nn(r.k,fl)} major</b><span class="muted">or its twin ${nn(rel,fl)} minor, if ${nn(rel,fl)}m feels like home</span></div>`;}).join('');}
 $('kf-clear').addEventListener('click',()=>{kf.clear();drawKF();});
 drawKF();
+
+/* sound settings: tone and note length, saved per browser. All visible text lives in SOUND_TEXT. */
+const SOUND_TEXT={button:'Sound',title:'Sound settings',tone:'Tone',length:'Note length',
+  hint:'Pick an option to hear it.',
+  tones:{acoustic:'Acoustic',nylon:'Nylon',clean:'Electric clean',overdrive:'Overdrive'},
+  lengths:{short:'Short',medium:'Medium',long:'Long'}};
+const SOUND_ICON='<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>';
+function drawSound(){const b=$('sound-btn');b.innerHTML=`<svg viewBox="0 0 24 24" aria-hidden="true">${SOUND_ICON}</svg><span class="tl">${SOUND_TEXT.button}</span>`;
+  b.title=`${SOUND_TEXT.title}: ${SOUND_TEXT.tones[tone]}, ${SOUND_TEXT.lengths[noteLen]}`;b.setAttribute('aria-label',b.title);
+  const seg=(k,opts,cur)=>`<div class="seg" role="group" aria-label="${k==='tone'?SOUND_TEXT.tone:SOUND_TEXT.length}">`+Object.keys(opts).map(o=>`<button type="button" data-${k}="${o}" aria-pressed="${o===cur}">${opts[o]}</button>`).join('')+'</div>';
+  $('sound-panel').innerHTML=`<h4>${SOUND_TEXT.tone}</h4>${seg('tone',SOUND_TEXT.tones,tone)}<h4>${SOUND_TEXT.length}</h4>${seg('len',SOUND_TEXT.lengths,noteLen)}<p>${SOUND_TEXT.hint}</p>`;}
+function soundOpen(open){$('sound-panel').hidden=!open;$('sound-btn').setAttribute('aria-expanded',open);}
+$('sound-btn').addEventListener('click',e=>{e.stopPropagation();soundOpen($('sound-panel').hidden);});
+$('sound-panel').addEventListener('click',e=>{e.stopPropagation();const t=e.target.closest('button');if(!t)return;
+  if(t.dataset.tone){tone=t.dataset.tone;store.set('tone',tone);}else if(t.dataset.len){noteLen=t.dataset.len;store.set('noteLen',noteLen);}else return;
+  drawSound();stopSeq();play(52,0,.36);play(59,.18,.3);play(64,.36,.3);});
+document.addEventListener('click',()=>soundOpen(false));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('sound-panel').hidden){soundOpen(false);$('sound-btn').focus();}});
+drawSound();
 
 /* theme: auto (follows the device) -> light -> dark */
 const THEME_ICON={auto:'<circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/>',
