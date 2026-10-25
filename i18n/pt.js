@@ -206,6 +206,7 @@
   'ky.t3.p':'O acorde V ({n:D} na tonalidade de {n:G}) cria uma tensão que quer resolver no I. Ouve esse puxão no fim da progressão I–IV–V acima.',
 
   /* percurso do curso */
+  'nav.roadmap':'Percurso do curso','nav.lessons':'Lições','nav.open':'Abrir o menu de lições','nav.close':'Fechar menu',
   'tab.course':'Curso','tab.ear':'Treino auditivo','tab.jam':'Jam',
   'co.eyebrow':'O teu curso',
   'co.h1':'De tocar de memória a perceber porquê',

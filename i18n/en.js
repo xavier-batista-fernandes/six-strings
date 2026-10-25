@@ -207,6 +207,7 @@
   'ky.t3.p':'The V chord ({n:D} in the key of {n:G}) creates tension that wants to resolve to I. Listen for that pull at the end of the I–IV–V progression above.',
 
   /* course roadmap */
+  'nav.roadmap':'Course roadmap','nav.lessons':'Lessons','nav.open':'Open the lesson menu','nav.close':'Close menu',
   'tab.course':'Course','tab.ear':'Ear training','tab.jam':'Jam',
   'co.eyebrow':'Your course',
   'co.h1':'From playing by memory to knowing why',
