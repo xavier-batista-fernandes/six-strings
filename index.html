@@ -3,12 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Interactive guitar theory lessons: fretboard notes, intervals, scales, chords and CAGED, keys and progressions.">
+<meta name="description" content="A guitar exercise library with a tab player, metronome, speed trainer, tempo log, routines, tuner and theory lessons.">
 <title>Six Strings</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
+<link rel="stylesheet" href="css/practice.css">
 <meta name="theme-color" content="#FFFFFF" id="theme-color">
 <script>try{var t=JSON.parse(localStorage.getItem('sixstrings:theme'));if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -328,10 +329,17 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
 <div class="shell">
 <!-- side menu: the course sequence (roadmap, then lessons in order). A drawer on small screens. -->
 <aside class="side" id="side" data-i18n-aria="aria.lessons" aria-label="Lessons">
-  <div class="side-head"><span data-i18n="tab.course"></span><button class="theme-btn" type="button" id="nav-close" data-i18n-aria="nav.close" aria-label="Close menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <div class="side-head"><span data-i18n="nav.menu"></span><button class="theme-btn" type="button" id="nav-close" data-i18n-aria="nav.close" aria-label="Close menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
   <nav class="tabs" role="tablist" aria-orientation="vertical" data-i18n-aria="aria.lessons" aria-label="Lessons">
+    <h4 class="sep first" data-i18n="nav.practice" aria-hidden="true"></h4>
+    <button class="tab" role="tab" data-tab="today" id="tab-today"><b><svg class="route" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.2"/><path d="M6 3.6V6l1.7 1.2"/></svg></b><span data-i18n="tab.today"></span><em class="cnt" id="cnt-today"></em></button>
+    <button class="tab" role="tab" data-tab="library" id="tab-library"><b><svg class="route" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2.2v7.6M5 2.2v7.6M8 2.6l2 7.2"/></svg></b><span data-i18n="tab.library"></span><em class="cnt" id="cnt-library"></em></button>
+    <button class="tab" role="tab" data-tab="routines" id="tab-routines"><b><svg class="route" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 3h8M2 6h8M2 9h5"/></svg></b><span data-i18n="tab.routines"></span><em class="cnt" id="cnt-routines"></em></button>
+    <button class="tab" role="tab" data-tab="progress" id="tab-progress"><b><svg class="route" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 10V7M5 10V4.5M8 10V6M10.5 10V2"/></svg></b><span data-i18n="tab.progress"></span><em class="cnt" id="cnt-progress"></em></button>
+    <button class="tab" role="tab" data-tab="tools" id="tab-tools"><b><svg class="route" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 10.5h4L6.6 1.5H5.4zM6 7.5l3-4"/></svg></b><span data-i18n="tab.tools"></span><em class="cnt" id="cnt-tools"></em></button>
+    <button class="tab" role="tab" data-tab="exercise" id="tab-exercise" hidden><b></b><span></span><em class="cnt" id="cnt-exercise"></em></button>
+    <h4 class="sep" data-i18n="nav.learn" aria-hidden="true"></h4>
     <button class="tab" role="tab" data-tab="course" id="tab-course"><b><svg class="route" viewBox="0 0 12 12" aria-hidden="true"><circle cx="2.5" cy="9.5" r="1.8"/><circle cx="9.5" cy="2.5" r="1.8"/><path d="M2.5 7.7V6a2 2 0 0 1 2-2h3a2 2 0 0 0 2-2"/></svg></b><span data-i18n="nav.roadmap"></span><em class="cnt" id="cnt-course"></em></button>
-    <h4 class="sep" data-i18n="nav.lessons" aria-hidden="true"></h4>
     <button class="tab" role="tab" data-tab="fretboard" id="tab-fretboard"><b>1</b><span data-i18n="tab.fretboard"></span><em class="cnt" id="cnt-fretboard"></em></button>
     <button class="tab" role="tab" data-tab="intervals" id="tab-intervals"><b>2</b><span data-i18n="tab.intervals"></span><em class="cnt" id="cnt-intervals"></em></button>
     <button class="tab" role="tab" data-tab="scales" id="tab-scales"><b>3</b><span data-i18n="tab.scales"></span><em class="cnt" id="cnt-scales"></em></button>
@@ -345,6 +353,14 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
 <div class="scrim" id="scrim"></div>
 
 <main>
+
+<!-- PRACTICE: Today, Library, one exercise, Routines, Progress, Tools. All drawn by js/practice.js from exercises/*.js. -->
+<section class="lesson" id="today" role="tabpanel" hidden></section>
+<section class="lesson" id="library" role="tabpanel" hidden></section>
+<section class="lesson" id="exercise" role="tabpanel" hidden></section>
+<section class="lesson" id="routines" role="tabpanel" hidden></section>
+<section class="lesson" id="progress" role="tabpanel" hidden></section>
+<section class="lesson" id="tools" role="tabpanel" hidden></section>
 
 <!-- COURSE: the roadmap. Units and steps are defined in COURSE in the script; progress is saved in this browser. -->
 <section class="lesson" id="course" role="tabpanel" hidden>
@@ -665,6 +681,17 @@ tbody tr{cursor:pointer} tbody tr:hover td{background:var(--surface-2)}
 
 <script src="i18n/en.js"></script>
 <script src="i18n/pt.js"></script>
+<script src="js/tab.js"></script>
+<script src="exercises/warmup.js"></script>
+<script src="exercises/left.js"></script>
+<script src="exercises/right.js"></script>
+<script src="exercises/rhythm.js"></script>
+<script src="exercises/chords.js"></script>
+<script src="exercises/scales.js"></script>
+<script src="exercises/fretboard.js"></script>
+<script src="exercises/ear.js"></script>
+<script src="exercises/improv.js"></script>
+<script src="exercises/styles.js"></script>
 <script>
 (function(){
 "use strict";
@@ -797,9 +824,10 @@ function strip(el,rootPc,ivs,flats,opt){
   el.innerHTML=h;}
 
 /* ---------- tabs ---------- */
-const TABS=['course','fretboard','intervals','scales','chords','keys','ear','jam'];
-function showTab(t){if(!TABS.includes(t))t='course';stopSeq();TABS.forEach(x=>{$(x).hidden=x!==t;$('tab-'+x).setAttribute('aria-selected',String(x===t));});store.set('tab',t);
-  try{history.replaceState(null,'','#'+t);}catch(e){}if(typeof drawNavBtn==='function')drawNavBtn();}
+const TABS=['today','library','exercise','routines','progress','tools','course','fretboard','intervals','scales','chords','keys','ear','jam'];
+function showTab(t,hash){if(!TABS.includes(t))t='today';stopSeq();TABS.forEach(x=>{$(x).hidden=x!==t;$('tab-'+x).setAttribute('aria-selected',String(x===t||(t==='exercise'&&x==='library')));});if(t!=='exercise')store.set('tab',t);
+  try{history.replaceState(null,'','#'+(hash||t));}catch(e){}if(typeof drawNavBtn==='function')drawNavBtn();tabHooks.forEach(f=>f(t));}
+const tabHooks=[];
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{showTab(b.dataset.tab);navOpen(false);window.scrollTo({top:0});}));
 
 /* side menu drawer (small screens) and the header button that shows the current lesson */
@@ -808,7 +836,7 @@ function navOpen(open){open=!!open&&!!(drawerMQ&&drawerMQ.matches);$('side').cla
   document.body.classList.toggle('nav-open',open);$('nav-btn').setAttribute('aria-expanded',open);
   if(open){const cur=document.querySelector('.tab[aria-selected="true"]');(cur||$('nav-close')).focus();}}
 function drawNavBtn(){const cur=TABS.find(x=>!$(x).hidden)||'course',b=$('nav-btn');
-  $('nav-cur').textContent=cur==='course'?t('nav.roadmap'):t('tab.'+cur);b.title=t('nav.open');b.setAttribute('aria-label',t('nav.open')+': '+$('nav-cur').textContent);}
+  $('nav-cur').textContent=cur==='course'?t('nav.roadmap'):cur==='exercise'?t('tab.library'):t('tab.'+cur);b.title=t('nav.open');b.setAttribute('aria-label',t('nav.open')+': '+$('nav-cur').textContent);}
 $('nav-btn').addEventListener('click',()=>navOpen(true));
 $('nav-close').addEventListener('click',()=>{navOpen(false);$('nav-btn').focus();});
 $('scrim').addEventListener('click',()=>navOpen(false));
@@ -1144,7 +1172,7 @@ function drawCourse(){const nxt=nextStep(),n=STEPS.filter(done).length;
     const next=!nxt?`<p>${t('co.finished.h')}</p>`:nxt.tab===tab?`<p>${t('co.cp.here')}</p>`
       :`<p><b>${t('co.next')}:</b> ${nxt.num} · ${t('cs.'+nxt.id+'.h')}</p><button class="btn primary" type="button" data-open="${nxt.id}">${t('co.continue')} →</button>`;
     el.innerHTML=`<h2>${t('co.cp.h')}</h2><p class="muted">${t('co.cp.p')}</p><ol class="steps">${mine.map(st=>stepRow(st,nxt,'co.show')).join('')}</ol><div class="next-line">${next}<button class="btn" type="button" data-tabgo="course">${t('co.back')}</button></div>`;});
-  TABS.forEach(tab=>{const mine=tab==='course'?STEPS:STEPS.filter(st=>st.tab===tab),k=mine.filter(done).length,b=$('tab-'+tab);
+  TABS.forEach(tab=>{if(['today','library','exercise','routines','progress','tools'].includes(tab))return;const mine=tab==='course'?STEPS:STEPS.filter(st=>st.tab===tab),k=mine.filter(done).length,b=$('tab-'+tab);
     b.classList.toggle('done',mine.length>0&&k===mine.length);b.classList.toggle('next',!!nxt&&tab!=='course'&&nxt.tab===tab);
     $('cnt-'+tab).textContent=mine.length?k+'/'+mine.length:'';});
   $('side-prog').innerHTML=`${n} ${t('co.of',{n:STEPS.length})}<div class="bar"><i style="width:${n/STEPS.length*100}%"></i></div>`;}
@@ -1210,9 +1238,16 @@ document.addEventListener('click',()=>langOpen(false));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('lang-panel').hidden){langOpen(false);$('lang-btn').focus();}});
 applyStatic();drawLang();RENDER.unshift(applyStatic);RENDER.push(drawLang,drawNavBtn);
 
-/* boot */
-const h=(location.hash||'').slice(1);showTab(TABS.includes(h)?h:store.get('tab','course'));
+/* shared API for js/practice.js (the exercise library and practice tools) */
+window.SS={t,fmt,store,$,board,chordBox,play,strum,ac,midiAt,pcAt,noteS,noteF,rootName,strName,seg,showTab,stopSeq,stopHooks,RENDER,tabHooks,TABS,
+  lang:()=>lang,setEar,setJM,qzNext,openStep,courseRefresh,
+  openTool(tool){if(tool==='quiz'){showTab('fretboard');requestAnimationFrame(()=>$('fb-quiz').scrollIntoView({block:'start'}));}
+    else if(tool==='ear-iv'){showTab('ear');setEar('iv','starter');}else if(tool==='ear-chord'){showTab('ear');setEar('chord');}
+    else if(tool==='jam'){showTab('jam');}else return false;window.scrollTo({top:0});return true;}};
+/* boot: js/practice.js handles #ex/<id> links; everything else opens its tab */
+const h=(location.hash||'').slice(1);if(!/^(ex|routine)\//.test(h))showTab(TABS.includes(h)&&h!=='exercise'?h:store.get('tab','today'));
 })();
 </script>
+<script src="js/practice.js"></script>
 </body>
 </html>
